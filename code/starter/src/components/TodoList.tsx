@@ -6,10 +6,13 @@ import {
   StackDivider,
   VStack,
   Button,
+  useToast,
 } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
 import { TodoListModel } from '../api/models'
 import { useTodosQuery } from '../hooks/useTodosQuery'
+import { useDeleteTodoMutation } from '../hooks/useDeleteTodoMutation'
+import { useUpdateTodoMutation } from '../hooks/useUpdateTodoMutation'
 
 // const hardcodedTodoList: TodoListModel = [
 //   { id: "1", completed: false, description: "Study" },
@@ -20,6 +23,9 @@ import { useTodosQuery } from '../hooks/useTodosQuery'
 
 const TodoList = () => {
   const { data, status } = useTodosQuery()
+  const updateTodoMutation = useUpdateTodoMutation()
+  const deleteTodoMutation = useDeleteTodoMutation()
+  const toast = useToast()
   if (status === 'loading') {
     return <div>Loading...</div>
   }
@@ -62,6 +68,22 @@ const TodoList = () => {
                 colorScheme='brand'
                 onChange={() => {
                   // 👉 TODO: Add logic for completing a todo item
+                  const mutationParams = {
+                    ...item,
+                    completed: !item.completed,
+                  }
+                  updateTodoMutation.mutate(mutationParams, {
+                    onError: () => {
+                      toast({
+                        title: 'Faile to Update todo Item',
+                        description: 'Failed to update todo',
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                        position: 'bottom-right',
+                      })
+                    },
+                  })
                 }}
               />
               <Text marginLeft='4' fontSize='md'>
@@ -78,6 +100,18 @@ const TodoList = () => {
                 variant='ghost'
                 onClick={() => {
                   // 👉 TODO: Add logic for deleting a todo item
+                  deleteTodoMutation.mutate(item.id, {
+                    onError: () => {
+                      toast({
+                        title: 'Faile to Delete todo Item',
+                        description: 'Failed to delete todo',
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                        position: 'bottom-right',
+                      })
+                    },
+                  })
                 }}
               >
                 <CloseIcon boxSize={2} />

@@ -1,7 +1,7 @@
-import { TodoItemModel, TodoListModel } from "./models";
+import { TodoItemModel, TodoListModel } from './models'
 
 // The base url of our backend REST API.
-const baseUrl = "api/todos";
+const baseUrl = 'api/todos'
 
 /**
  * Client for making `fetch` calls to our backend REST API.
@@ -11,16 +11,16 @@ const todosApi = {
    * Lists all the todo items.
    */
   async list(): Promise<TodoListModel> {
-    const response = await fetch(baseUrl);
+    const response = await fetch(baseUrl)
 
     if (!response.ok) {
       throw new Error(
         `An error occured listing todo items! status: ${response.status}`
-      );
+      )
     }
 
-    const todos: TodoListModel = await response.json();
-    return todos;
+    const todos: TodoListModel = await response.json()
+    return todos
   },
 
   /**
@@ -30,14 +30,14 @@ const todosApi = {
    */
   async create(description: string): Promise<void> {
     const response = await fetch(baseUrl, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ description }),
-    });
+    })
 
     if (!response.ok) {
       throw new Error(
         `An error occured creating new todo item! status: ${response.status}`
-      );
+      )
     }
   },
 
@@ -46,17 +46,17 @@ const todosApi = {
    * For example, this endpoint can be used to set `completed = true` for a todo item.
    */
   async update(updatedTodo: TodoItemModel): Promise<void> {
-    const { id, ...rest } = updatedTodo;
+    const { id, ...rest } = updatedTodo
 
     const response = await fetch(`${baseUrl}/${id}`, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(rest),
-    });
+    })
 
     if (!response.ok) {
       throw new Error(
         `An error occured updating a todo item! status: ${response.status}`
-      );
+      )
     }
   },
 
@@ -65,15 +65,15 @@ const todosApi = {
    */
   async delete(id: string): Promise<void> {
     const response = await fetch(`${baseUrl}/${id}`, {
-      method: "DELETE",
-    });
+      method: 'DELETE',
+    })
 
     if (!response.ok) {
       throw new Error(
         `An error occured deleting a todo item! status: ${response.status}`
-      );
+      )
     }
   },
-} as const;
+} as const
 
-export default todosApi;
+export default todosApi
