@@ -9,6 +9,7 @@ import { setupWorker } from 'msw'
 import { handlers } from './backend/server'
 import todosDb from './backend/db'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -44,6 +45,7 @@ const queryClient = new QueryClient()
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
       <ChakraProvider theme={theme}>
         <App />
       </ChakraProvider>
