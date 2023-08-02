@@ -13,6 +13,8 @@ import { TodoListModel } from '../api/models'
 import { useTodosQuery } from '../hooks/useTodosQuery'
 import { useDeleteTodoMutation } from '../hooks/useDeleteTodoMutation'
 import { useUpdateTodoMutation } from '../hooks/useUpdateTodoMutation'
+import { useUpdateTodoMutationOptimistic } from '../hooks/useUpdateTodoMutationOptimistic'
+import { useDeleteTodoMutationOptimistic } from '../hooks/useDeleteTodoMutationOptimistic'
 
 // const hardcodedTodoList: TodoListModel = [
 //   { id: "1", completed: false, description: "Study" },
@@ -23,8 +25,8 @@ import { useUpdateTodoMutation } from '../hooks/useUpdateTodoMutation'
 
 const TodoList = () => {
   const { data, status } = useTodosQuery()
-  const updateTodoMutation = useUpdateTodoMutation()
-  const deleteTodoMutation = useDeleteTodoMutation()
+  const updateTodoMutation = useUpdateTodoMutationOptimistic()
+  const deleteTodoMutation = useDeleteTodoMutationOptimistic()
   const toast = useToast()
   if (status === 'loading') {
     return <div>Loading...</div>
